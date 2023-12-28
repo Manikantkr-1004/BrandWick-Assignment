@@ -1,0 +1,6 @@
+.process{
+    transition: all ease 0.5s;
+}
+.process:active{
+    transform: scale(0.8);
+}
