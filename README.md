@@ -55,7 +55,7 @@ run project
 npm run server
 ```
 
-### For Backend
+### For Frontend
 
 ```bash
 cd frontend
