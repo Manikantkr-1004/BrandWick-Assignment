@@ -1,17 +1,40 @@
 import { useState } from "react";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { Signup } from "./Signup";
 import { Login } from "./Login";
+import axios from "axios";
 
 export function Dashboard() {
     const [process, setProcess] = useState("signup");
+    const [loading,setLoading] = useState(false);
+    const toast = useToast();
     const [userData, setUserData] = useState(
         JSON.parse(localStorage.getItem("brandwick")) || null
     );
 
     const handleLogout = () => {
-        localStorage.removeItem("brandwick");
-        window.location.reload();
+        setLoading(true);
+
+        axios.post('https://brandwick.onrender.com/user/logout',{token:userData.token})
+        .then((res)=>{
+            setLoading(false);
+            toast({
+                title: `${res.data.msg}`,
+                status: 'success',
+                duration: 2000,
+                isClosable: true
+            })
+            localStorage.removeItem("brandwick");
+            window.location.reload();
+        }).catch((err)=>{
+            setLoading(false);
+            toast({
+                title: `${err.response.data.msg}`,
+                status: 'error',
+                duration: 2000,
+                isClosable: true
+            })
+        })
     };
 
     return (
@@ -22,20 +45,21 @@ export function Dashboard() {
                 </Text>
             )}
             {userData && (
-                <Button
-                    display="block"
-                    m="auto"
+                <Box textAlign='center'>
+                    <Button
                     mt="20px"
                     className="process"
                     onClick={handleLogout}
                     w="50%"
-                    variant="unstyled"
+                    isLoading={loading}
                     color="#fff"
                     borderRadius="10px"
+                    _hover={{bg:'red'}}
                     bg="red"
-                >
-                    Logout
-                </Button>
+                    >
+                        Logout
+                    </Button>
+                </Box>
             )}
 
             {!userData && (
