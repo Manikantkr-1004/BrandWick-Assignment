@@ -5,7 +5,9 @@ BrandWick is a platform where user can register and login securely by JWT.
 
 ## Features
 
-- Secure User Authentication using JWT.
+- Secure User Signup
+- Secure Login by JWT with expiry time
+- Logout with blacklisting token
 
 ## Tech Stack
 
